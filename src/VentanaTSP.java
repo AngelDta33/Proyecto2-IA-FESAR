@@ -21,31 +21,21 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Ventana principal.
- * Uso: 1) clic en la matriz para poner el inicio, 2) clic para poner cada nodo,
- *      3) ajustar parámetros y presionar "Resolver".
- */
 public class VentanaTSP extends JFrame {
 
     private final PanelMatriz matriz = new PanelMatriz();
 
-    // ---- Problema ----
     private final JRadioButton opcionInicio = new JRadioButton("Colocar inicio", true);
     private final JRadioButton opcionNodos = new JRadioButton("Colocar nodos");
     private final JSpinner campoNumNodos = new JSpinner(new SpinnerNumberModel(7, 1, 50, 1));
     private final JLabel etiquetaEstado = new JLabel();
 
-    // ---- Parámetros del AG ----
-    // Nota: la teoría sugiere mutación de 1-5%, pero con reducción elitista la población
-    // converge muy rápido y se atora en rutas no óptimas. Con 20% encuentra el óptimo casi siempre.
     private final JSpinner campoPoblacion = new JSpinner(new SpinnerNumberModel(100, 2, 500, 2));
     private final JSpinner campoCruza = new JSpinner(new SpinnerNumberModel(80, 0, 100, 1));
     private final JSpinner campoMutacion = new JSpinner(new SpinnerNumberModel(20, 0, 100, 1));
     private final JSpinner campoMaxGeneraciones = new JSpinner(new SpinnerNumberModel(500, 1, 10000, 50));
     private final JSpinner campoConvergencia = new JSpinner(new SpinnerNumberModel(90, 1, 100, 1));
 
-    // ---- Resultados ----
     private final JTextArea areaResultados = new JTextArea(16, 40);
 
     public VentanaTSP() {
@@ -67,10 +57,8 @@ public class VentanaTSP extends JFrame {
         pack();
         setLocationRelativeTo(null);
     }
-
-    // =====================================================================
+    
     //  Construcción de la interfaz
-    // =====================================================================
 
     private JPanel crearPanelDerecho() {
         JPanel arriba = new JPanel();
@@ -143,14 +131,10 @@ public class VentanaTSP extends JFrame {
         return seccion;
     }
 
-    // =====================================================================
-    //  Acciones del usuario
-    // =====================================================================
-
     private void alHacerClicEnMatriz(int x, int y) {
         int[] celda = matriz.celdaEn(x, y);
         if (celda == null) {
-            return; // clic fuera de la matriz
+            return;
         }
         int fila = celda[0];
         int columna = celda[1];
@@ -161,7 +145,7 @@ public class VentanaTSP extends JFrame {
 
         if (opcionInicio.isSelected()) {
             matriz.setInicio(new Nodo(fila, columna));
-            opcionNodos.setSelected(true); // lo siguiente normalmente es poner nodos
+            opcionNodos.setSelected(true);
         } else {
             if (matriz.getNodos().size() >= numeroDeNodos()) {
                 mostrarMensaje("Ya colocaste los " + numeroDeNodos() + " nodos.\n"
@@ -173,7 +157,6 @@ public class VentanaTSP extends JFrame {
         actualizarEstado();
     }
 
-    /** Coloca el número de nodos elegido en celdas libres al azar (y el inicio, si falta). */
     private void colocarNodosAlAzar() {
         Random azar = new Random();
         matriz.limpiarNodos();
@@ -192,7 +175,6 @@ public class VentanaTSP extends JFrame {
         actualizarEstado();
     }
 
-    /** Carga el ejemplo del enunciado (solución esperada: 2-7-3-1-6-4-5). */
     private void cargarEjemplo() {
         matriz.limpiarNodos();
         matriz.setInicio(new Nodo(18, 2));
@@ -243,11 +225,7 @@ public class VentanaTSP extends JFrame {
         matriz.setRuta(mejorRuta);
         mostrarResultados(ag, inicio, nodos, mejorRuta);
     }
-
-    // =====================================================================
-    //  Auxiliares
-    // =====================================================================
-
+    
     private void mostrarResultados(AlgoritmoGenetico ag, Nodo inicio, List<Nodo> nodos, int[] mejorRuta) {
         StringBuilder texto = new StringBuilder();
         texto.append("Inicio: ").append(inicio).append("\n");
@@ -262,7 +240,7 @@ public class VentanaTSP extends JFrame {
         texto.append(ag.getBitacora());
 
         areaResultados.setText(texto.toString());
-        areaResultados.setCaretPosition(0); // mostrar desde arriba
+        areaResultados.setCaretPosition(0);
     }
 
     private void actualizarEstado() {
