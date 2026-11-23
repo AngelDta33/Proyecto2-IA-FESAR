@@ -26,7 +26,7 @@ import java.util.Random;
  */
 public class AlgoritmoGenetico {
 
-    /** Todo lo que pasó en una generación, escrito como texto. */
+    /** todo lo que pasó en una generación, escrito como texto. */
     public static class DetalleGeneracion {
         public final int numero;
         public final String texto;
@@ -52,7 +52,7 @@ public class AlgoritmoGenetico {
     private List<int[]> poblacion;
     private int generacionesUsadas;
 
-    // ---------- Registro de lo que pasa ----------
+
     private final StringBuilder bitacora = new StringBuilder();           // una línea por generación
     private StringBuilder detalle = new StringBuilder();                  // todo lo de la generación actual
     private final List<DetalleGeneracion> primeras = new ArrayList<>();   // generaciones 1 a 5
@@ -253,7 +253,7 @@ public class AlgoritmoGenetico {
         return -1;
     }
 
-    /** Decide con un número al azar si el hijo muta o no. */
+    /** decide con un número al azar si el hijo muta o no. */
     private void intentarMutar(int[] hijo, String nombre) {
         double numeroMutacion = azar.nextDouble();
         if (numeroMutacion < probMutacion) {
@@ -318,16 +318,13 @@ public class AlgoritmoGenetico {
         individuos.sort(Comparator.comparingDouble(this::distanciaTotal));
     }
 
-    // =====================================================================
     //  Anotaciones (el texto que se ve en la ventana de detalle)
-    // =====================================================================
-
-    /** Agrega una línea al detalle de la generación actual. Funciona igual que String.format. */
+    /** Agrega una línea al detalle de la generacion actual. . */
     private void anotar(String formato, Object... datos) {
         detalle.append(String.format(formato, datos)).append('\n');
     }
 
-    /** Tabla con cada ruta de la población y la parte de la ruleta que le toca. */
+    /** tabla con cada ruta de la poblacion y la parte de la ruleta que le toca. */
     private void anotarTablaRuleta(double[] aptitudes, double suma) {
         int ancho = Math.max(4, rutaATexto(poblacion.get(0)).length());
         String formatoFila = "  %4s  %-" + ancho + "s  %9s  %9s  %8s  %s";
@@ -402,7 +399,7 @@ public class AlgoritmoGenetico {
         }
     }
 
-    /** Guarda el detalle de la generación: siempre las 5 primeras, y solo las 5 más recientes del resto. */
+    /** guarda el detalle de la generación siempre las 5 primeras, y solo las 5 mas recientes del resto */
     private void guardarDetalle(int generacion) {
         DetalleGeneracion d = new DetalleGeneracion(generacion, detalle.toString());
         if (generacion <= GENERACIONES_A_MOSTRAR) {
@@ -447,9 +444,8 @@ public class AlgoritmoGenetico {
                 generacion, distanciaTotal(poblacion.get(0)), calcularConvergencia() * 100));
     }
 
-    // =====================================================================
     //  Resultados (los usa la interfaz)
-    // =====================================================================
+   
 
     public String getBitacora() {
         return bitacora.toString();
@@ -463,7 +459,7 @@ public class AlgoritmoGenetico {
         return calcularConvergencia();
     }
 
-    /** Detalle de las primeras 5 y las últimas 5 generaciones, en orden. */
+    /** detalle de las primeras 5 y las últimas 5 generaciones, en orden */
     public List<DetalleGeneracion> getDetalles() {
         List<DetalleGeneracion> todas = new ArrayList<>(primeras);
         todas.addAll(ultimas);
@@ -474,7 +470,7 @@ public class AlgoritmoGenetico {
         return textoFinal;
     }
 
-    /** Texto con los parámetros usados y qué generaciones se muestran. */
+    /** texto con los parámetros usados y qué generaciones se muestran. */
     public String getResumen() {
         StringBuilder texto = new StringBuilder();
         texto.append("PARÁMETROS\n");
@@ -526,8 +522,7 @@ public class AlgoritmoGenetico {
     }
 
     /**
-     * Ruta con un tramo marcado, por ejemplo "2 7 | 3 1 6 | 4 5" o "2 4 [6 3] 1 7 5".
-     * El tramo es [desde, hasta). Los 0 se muestran como "_" (posiciones vacías).
+     * Ruta con un tramo marcado
      */
     private static String marcarTramo(int[] ruta, int desde, int hasta, String abre, String cierra) {
         StringBuilder texto = new StringBuilder();
