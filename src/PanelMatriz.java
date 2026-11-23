@@ -23,17 +23,13 @@ public class PanelMatriz extends JPanel {
 
     private Nodo inicio;
     private final List<Nodo> nodos = new ArrayList<>();
-    private int[] ruta; // null mientras no se haya resuelto
+    private int[] ruta;
 
     public PanelMatriz() {
         int lado = MARGEN + TAMANO * CELDA + 10;
         setPreferredSize(new Dimension(lado, lado));
         setBackground(Color.WHITE);
     }
-
-    // =====================================================================
-    //  Datos
-    // =====================================================================
 
     public Nodo getInicio() {
         return inicio;
@@ -68,7 +64,6 @@ public class PanelMatriz extends JPanel {
         repaint();
     }
 
-    /** true si en esa celda ya está el inicio o algún nodo. */
     public boolean estaOcupada(int fila, int columna) {
         if (inicio != null && inicio.estaEn(fila, columna)) {
             return true;
@@ -81,7 +76,6 @@ public class PanelMatriz extends JPanel {
         return false;
     }
 
-    /** Convierte un clic (x, y) en {fila, columna}, o null si fue fuera de la matriz. */
     public int[] celdaEn(int x, int y) {
         if (x < MARGEN || y < MARGEN) {
             return null;
@@ -93,10 +87,6 @@ public class PanelMatriz extends JPanel {
         }
         return new int[]{fila, columna};
     }
-
-    // =====================================================================
-    //  Dibujo
-    // =====================================================================
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -145,7 +135,7 @@ public class PanelMatriz extends JPanel {
             dibujarFlecha(g2, anterior, siguiente);
             anterior = siguiente;
         }
-        dibujarFlecha(g2, anterior, inicio); // regreso al inicio
+        dibujarFlecha(g2, anterior, inicio);
 
         g2.setStroke(new BasicStroke(1));
     }
@@ -171,20 +161,17 @@ public class PanelMatriz extends JPanel {
         dibujarTextoCentrado(g2, texto, x, y);
     }
 
-    /** Línea de 'desde' a 'hasta' con una punta de flecha al final. */
     private void dibujarFlecha(Graphics2D g2, Nodo desde, Nodo hasta) {
         double x1 = centroX(desde);
         double y1 = centroY(desde);
         double angulo = Math.atan2(centroY(hasta) - y1, centroX(hasta) - x1);
 
-        // La flecha termina en el borde del círculo destino, no en su centro
         double x2 = centroX(hasta) - RADIO * Math.cos(angulo);
         double y2 = centroY(hasta) - RADIO * Math.sin(angulo);
         g2.draw(new Line2D.Double(x1, y1, x2, y2));
 
-        // Punta: dos líneas cortas inclinadas hacia atrás
         int largoPunta = 9;
-        double apertura = 0.4; // radianes
+        double apertura = 0.4;
         g2.draw(new Line2D.Double(x2, y2,
                 x2 - largoPunta * Math.cos(angulo - apertura), y2 - largoPunta * Math.sin(angulo - apertura)));
         g2.draw(new Line2D.Double(x2, y2,
