@@ -47,6 +47,7 @@ public class VentanaTSP extends JFrame {
 
     // ---- Resultados ----
     private final JTextArea areaResultados = new JTextArea(16, 40);
+    private VentanaDetalle ventanaDetalle; // la ventana con el detalle de la última ejecución
 
     public VentanaTSP() {
         super("TSP con Algoritmo Genético");
@@ -242,6 +243,16 @@ public class VentanaTSP extends JFrame {
         int[] mejorRuta = ag.ejecutar();
         matriz.setRuta(mejorRuta);
         mostrarResultados(ag, inicio, nodos, mejorRuta);
+        abrirVentanaDetalle(ag);
+    }
+
+    /** Abre la ventana con todo lo que pasó dentro del AG (cierra la de la ejecución anterior). */
+    private void abrirVentanaDetalle(AlgoritmoGenetico ag) {
+        if (ventanaDetalle != null) {
+            ventanaDetalle.dispose();
+        }
+        ventanaDetalle = new VentanaDetalle(this, ag);
+        ventanaDetalle.setVisible(true);
     }
 
     // =====================================================================
