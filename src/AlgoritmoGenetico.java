@@ -26,7 +26,6 @@ import java.util.Random;
  */
 public class AlgoritmoGenetico {
 
-<<<<<<< HEAD
     /** Todo lo que pasó en una generación, escrito como texto. */
     public static class DetalleGeneracion {
         public final int numero;
@@ -40,20 +39,12 @@ public class AlgoritmoGenetico {
 
     private static final int GENERACIONES_A_MOSTRAR = 5;
 
-    // ---------- Datos del problema ----------
-=======
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
     private final Nodo inicio;
     private final List<Nodo> nodos;
 
     private final int tamPoblacion;
-<<<<<<< HEAD
-    private final double probCruza;         // de 0 a 1  (ej. 0.80)
-    private final double probMutacion;      // de 0 a 1  (ej. 0.20)
-=======
-    private final double probCruza;         
-    private final double probMutacion;      
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
+    private final double probCruza;
+    private final double probMutacion;
     private final int maxGeneraciones;
     private final double convergenciaParo;  
 
@@ -100,22 +91,11 @@ public class AlgoritmoGenetico {
         }
 
         generacionesUsadas = generacion;
-<<<<<<< HEAD
         textoFinal = crearTextoFinal();
-        return poblacion.get(0); // tras ordenar, el primero es el mejor
-    }
-
-    /**
-     * Ciclo reproductivo: se repite Tamaño(Población)/2 veces y cada vuelta produce 2 hijos.
-     * Seleccionar 2 padres -> cruzar (con cierta probabilidad) -> mutar (con cierta probabilidad).
-     */
-    private List<int[]> producirHijos(int generacion) {
-=======
         return poblacion.get(0);
     }
 
-    private List<int[]> producirHijos() {
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
+    private List<int[]> producirHijos(int generacion) {
         double[] aptitudes = calcularAptitudes(poblacion);
         double suma = sumar(aptitudes);
 
@@ -204,24 +184,7 @@ public class AlgoritmoGenetico {
         return aptitudes;
     }
 
-<<<<<<< HEAD
-    // =====================================================================
-    //  Selección: ruleta
-    // =====================================================================
-
-    /**
-     * Cada individuo ocupa en la ruleta un área proporcional a su aptitud.
-     * Se "gira" la ruleta con un número al azar y se devuelve la POSICIÓN del individuo donde cae.
-     */
     private int seleccionarPorRuleta(double[] aptitudes, double suma, String nombre) {
-=======
-    private int[] seleccionarPorRuleta(double[] aptitudes) {
-        double suma = 0;
-        for (double a : aptitudes) {
-            suma += a;
-        }
-
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
         double giro = azar.nextDouble() * suma;
         double acumulado = 0;
         int elegido = aptitudes.length - 1; // por si el redondeo deja el giro al final
@@ -233,15 +196,11 @@ public class AlgoritmoGenetico {
                 break;
             }
         }
-<<<<<<< HEAD
 
         int[] ruta = poblacion.get(elegido);
         anotar("  %s: giro de la ruleta = %.2f%% -> cae en #%d  %s  (dist %.2f)",
                 nombre, giro / suma * 100, elegido + 1, rutaATexto(ruta), distanciaTotal(ruta));
         return elegido;
-=======
-        return poblacion.get(poblacion.size() - 1);
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
     }
     
     private int[] elegirPuntosDeCorte() {
@@ -271,12 +230,8 @@ public class AlgoritmoGenetico {
             String cadena = String.valueOf(gen);
             int posEnTramo = buscarEnTramo(padreB, gen, corte1, corte2);
             while (posEnTramo != -1) {
-<<<<<<< HEAD
-                gen = padreA[posEnTramo]; // aplicar la correspondencia
-                cadena += " -> " + gen;
-=======
                 gen = padreA[posEnTramo];
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
+                cadena += " -> " + gen;
                 posEnTramo = buscarEnTramo(padreB, gen, corte1, corte2);
             }
             if (gen != padreA[i]) {
@@ -297,11 +252,6 @@ public class AlgoritmoGenetico {
         }
         return -1;
     }
-<<<<<<< HEAD
-
-    // =====================================================================
-    //  Mutación: DM (desplazamiento)
-    // =====================================================================
 
     /** Decide con un número al azar si el hijo muta o no. */
     private void intentarMutar(int[] hijo, String nombre) {
@@ -314,13 +264,6 @@ public class AlgoritmoGenetico {
         }
     }
 
-    /**
-     * Se saca un tramo al azar de la ruta y se inserta en otra posición al azar.
-     * Ejemplo de clase: (1 2 3 4 5 6 7 8), tramo (3 4 5) -> (1 2 6 7 3 4 5 8)
-     */
-=======
-    
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
     private void mutacionDM(int[] ruta) {
         int[] antes = ruta.clone();
         List<Integer> lista = aLista(ruta);
@@ -374,7 +317,6 @@ public class AlgoritmoGenetico {
     private void ordenarDeMejorAPeor(List<int[]> individuos) {
         individuos.sort(Comparator.comparingDouble(this::distanciaTotal));
     }
-<<<<<<< HEAD
 
     // =====================================================================
     //  Anotaciones (el texto que se ve en la ventana de detalle)
@@ -500,9 +442,6 @@ public class AlgoritmoGenetico {
         return detalle.toString();
     }
 
-=======
-    
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
     private void registrarGeneracion(int generacion) {
         bitacora.append(String.format("Gen %3d | mejor: %6.2f | conv: %3.0f%%%n",
                 generacion, distanciaTotal(poblacion.get(0)), calcularConvergencia() * 100));
@@ -524,7 +463,6 @@ public class AlgoritmoGenetico {
         return calcularConvergencia();
     }
 
-<<<<<<< HEAD
     /** Detalle de las primeras 5 y las últimas 5 generaciones, en orden. */
     public List<DetalleGeneracion> getDetalles() {
         List<DetalleGeneracion> todas = new ArrayList<>(primeras);
@@ -576,9 +514,6 @@ public class AlgoritmoGenetico {
         return texto.toString();
     }
 
-    /** Convierte una ruta a texto, por ejemplo "2-7-3-1-6-4-5". */
-=======
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
     public static String rutaATexto(int[] ruta) {
         StringBuilder texto = new StringBuilder();
         for (int i = 0; i < ruta.length; i++) {
@@ -589,9 +524,6 @@ public class AlgoritmoGenetico {
         }
         return texto.toString();
     }
-
-<<<<<<< HEAD
-    // ---------- Utilidades ----------
 
     /**
      * Ruta con un tramo marcado, por ejemplo "2 7 | 3 1 6 | 4 5" o "2 4 [6 3] 1 7 5".
@@ -629,8 +561,6 @@ public class AlgoritmoGenetico {
         return suma;
     }
 
-=======
->>>>>>> 0c6a33599bc513cdd97c13b2ebed4f0463477279
     private static int[] aArreglo(List<Integer> lista) {
         int[] arreglo = new int[lista.size()];
         for (int i = 0; i < lista.size(); i++) {
